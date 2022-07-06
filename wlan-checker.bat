@@ -42,5 +42,5 @@ set status=0
 goto start1
 
 
-
+rem Ниже нерабочий ванлайнер. К сожалению необходимо сначала проверять пинг
 REM for /L %%I in (1,0,2) DO (netsh wlan connect name=Afroditius && timeout /t 4 > nul)

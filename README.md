@@ -1,5 +1,5 @@
 # wlan-checker
-check wifi connection on lenovo 530 and reconnect to it if has losses
+check wifi connection on lenovo e530 and reconnect to it if has losses
 
 ---
 
