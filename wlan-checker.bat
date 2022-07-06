@@ -1,33 +1,33 @@
 rem version 0.1.1
 @echo off
-chcp 65001 > nul
+chcp 1251 > nul
 title WLAN-CHECKER
 mode con:cols=60 lines=30 > nul
 cd %~dp0
 cls
 
-rem РѕР±СЂР°Р±РѕС‚РєР° Р°СЂРіСѓРјРµРЅС‚РѕРІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё %1 Рё %2
+rem обработка аргументов командной строки %1 и %2
 set network=Home
 set gateway=192.168.31.1
 if not "%1" EQU "" set "network=%1"
 if not "%2" EQU "" set "gateway=%2"
 set status=0
 
-if "%network%" EQU "Home" echo. РќР°СЃС‚СЂРѕР№РєРё СЃРµС‚Рё РЅРµ Р·Р°РґР°РЅС‹, РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ!
-echo. РњРѕРЅРёС‚РѕСЂРёРЅРі РїРѕРґРєР»СЋС‡РµРЅРёСЏ Р°РєС‚РёРІРёСЂРѕРІР°РЅ. 
-echo. РЎРµС‚СЊ: %network%
-echo. РџРёРЅРі: %gateway%
+if "%network%" EQU "Home" echo. Настройки сети не заданы, используются стандартные!
+echo. Мониторинг подключения активирован. 
+echo. Сеть: %network%
+echo. Пинг: %gateway%
 
 :start1
 ping -n 1 %gateway% | find /I "TTL" > nul
 if %ERRORLEVEL%==0 goto end
-echo. && echo %time% РџРµСЂРµРїРѕРґРєР»СЋС‡Р°СЋСЃСЊ Рє СЃРµС‚Рё %network%. РџРѕРґРѕР¶РґРё 5СЃ.
+echo. && echo %time% Переподключаюсь к сети %network%. Подожди 5с.
 netsh wlan disconnect > nul
 netsh wlan connect name=%network% ssid=%network% > nul
 timeout /t 4 > nul
-rem РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ С‚Р°Р№РјР°СѓС‚, РµСЃР»Рё РЅРµ РїРѕР»СѓС‡РёР»РѕСЃСЊ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ СЃ РїРµСЂРІРѕРіРѕ Рё РІС‚РѕСЂРѕРіРѕ СЂР°Р·Р°
+rem дополнительный таймаут, если не получилось подключиться с первого и второго раза
 if %status% GTR 1 (
-echo Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРµ РІСЂРµРјСЏ... РџРѕРїС‹С‚РєР°: %status%
+echo Дополнительное время... Попытка: %status%
 timeout /t 10 > nul
 )
 
@@ -35,7 +35,7 @@ set /a status=%status%+1
 goto start1
 
 :end
-rem РІС‹РІРѕРґ С‚РѕС‡РµРє РІ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ
+rem вывод точек в одну строку
 < nul set /p str="."
 timeout /t 1 > nul
 set status=0
