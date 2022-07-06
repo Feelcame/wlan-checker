@@ -1,4 +1,4 @@
-rem version 0.1.1
+rem version 0.1.2
 @echo off
 chcp 65001 > nul
 title WLAN-CHECKER
