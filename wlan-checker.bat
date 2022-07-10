@@ -1,7 +1,6 @@
 rem version 0.1.2
 @echo off
 chcp 65001 > nul
-title WLAN-CHECKER
 mode con:cols=60 lines=30 > nul
 cd %~dp0
 cls
@@ -11,6 +10,7 @@ set network=Home
 set gateway=192.168.31.1
 if not "%1" EQU "" set "network=%1"
 if not "%2" EQU "" set "gateway=%2"
+title %network%. WLAN-CHECKER
 set status=0
 
 if "%network%" EQU "Home" echo. Настройки сети не заданы, используются стандартные!
