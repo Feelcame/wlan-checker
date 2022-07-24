@@ -1,11 +1,14 @@
 rem version 0.1.3
 @echo off
 chcp 65001 > nul
+rem Ширина окна "cols=60" символов. По точке в секунду, значит одна сторочка = одна минута
 mode con:cols=60 lines=30 > nul
 cd %~dp0
 cls
 
-rem обработка аргументов командной строки %1 и %2
+rem Обработка аргументов командной строки %1 и %2.
+rem Какое соединение мониторить можно передать аргументом, или изменить исходники
+rem Пример передачи аргумента через ярлык: "C:\soft\wlan-checker\wlan-checker.bat miwifi 192.168.31.1"
 set network=Home
 set gateway=192.168.31.1
 if not "%1" EQU "" set "network=%1"
@@ -27,7 +30,7 @@ rem Вывод символов в одну строку
 timeout /t 1 > nul
 goto start1
 )
-if %status% EQU 0 echo.
+if %status% EQU 0 echo.& rem Тут перенос строки, что бы следующее сообщение вывелось на новой
 set /a status=%status%+1
 set timeout=5
 rem Дополнительный таймаут. EQU:==  NEQ:!=  LSS:<  LEQ:<=  GTR:>  GEQ:>=
