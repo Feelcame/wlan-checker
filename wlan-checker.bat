@@ -1,4 +1,4 @@
-rem version 0.1.2
+rem version 0.1.3
 @echo off
 chcp 65001 > nul
 mode con:cols=60 lines=30 > nul
@@ -20,26 +20,24 @@ echo. Пинг: %gateway%
 
 :start1
 ping -n 1 %gateway% | find /I "TTL" > nul
-if %ERRORLEVEL%==0 goto end
-echo. && echo %time% Переподключаюсь к сети %network%. Подожди 5с.
-netsh wlan disconnect > nul
-netsh wlan connect name=%network% ssid=%network% > nul
-timeout /t 4 > nul
-rem дополнительный таймаут, если не получилось подключиться с первого и второго раза
-if %status% GTR 1 (
-echo Дополнительное время... Попытка: %status%
-timeout /t 10 > nul
-)
-
-set /a status=%status%+1
-goto start1
-
-:end
-rem вывод точек в одну строку
+if %ERRORLEVEL%==0 (
+set status=0
+rem Вывод символов в одну строку
 < nul set /p str="."
 timeout /t 1 > nul
-set status=0
 goto start1
+)
+if %status% EQU 0 echo.
+set /a status=%status%+1
+set timeout=5
+rem Дополнительный таймаут. EQU:==  NEQ:!=  LSS:<  LEQ:<=  GTR:>  GEQ:>=
+if %status% GTR 2 set timeout=15
+echo %time% Переподключение. Попытка: %status%. Подожди %timeout%с.
+netsh wlan disconnect > nul
+netsh wlan connect name=%network% ssid=%network% > nul
+timeout /t %timeout% > nul
+goto start1
+
 
 
 rem Ниже нерабочий ванлайнер. К сожалению необходимо сначала проверять пинг
