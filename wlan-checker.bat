@@ -1,7 +1,7 @@
 rem version 0.1.3
 @echo off
 chcp 65001 > nul
-rem Ширина окна "cols=60" символов. По точке в секунду, значит одна сторочка = одна минута
+rem Ширина окна "cols=60" символов. По точке в секунду, значит одна строчка = одна минута
 mode con:cols=60 lines=30 > nul
 cd %~dp0
 cls
@@ -16,7 +16,7 @@ if not "%2" EQU "" set "gateway=%2"
 title %network%. WLAN-CHECKER
 set status=0
 
-if "%network%" EQU "Home" echo. Настройки сети не заданы, используются стандартные!
+if "%network%" == "Home" echo. Настройки сети не заданы, используются стандартные!
 echo. Мониторинг подключения активирован. 
 echo. Сеть: %network%
 echo. Пинг: %gateway%
@@ -30,7 +30,9 @@ rem Вывод символов в одну строку
 timeout /t 1 > nul
 goto start1
 )
-if %status% EQU 0 echo.& rem Тут перенос строки, что бы следующее сообщение вывелось на новой
+
+rem Пинг не прошел. Переподключение
+if %status% == 0 echo.& rem Тут перенос строки, что бы следующее сообщение вывелось на новой
 set /a status=%status%+1
 set timeout=5
 rem Дополнительный таймаут. EQU:==  NEQ:!=  LSS:<  LEQ:<=  GTR:>  GEQ:>=
